@@ -1,0 +1,374 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Bom dia, princesa</title>
+
+<style>
+/* ================= RESET ================= */
+* {
+  box-sizing: border-box;
+  margin: 0;
+  padding: 0;
+}
+
+/* ================= BODY ================= */
+body {
+  height: 100vh;
+  font-family: "Segoe UI", sans-serif;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  background:
+    radial-gradient(circle at top, #fff1f7, transparent 60%),
+    linear-gradient(to top, #ffd6e8, #fff3c9);
+  overflow: hidden;
+  padding:
+    env(safe-area-inset-top)
+    env(safe-area-inset-right)
+    env(safe-area-inset-bottom)
+    env(safe-area-inset-left);
+}
+
+/* ================= CORAÇÕES ================= */
+.hearts {
+  position: fixed;
+  inset: 0;
+  pointer-events: none;
+  z-index: 1;
+}
+
+.heart {
+  position: absolute;
+  top: -40px;
+  /* color: #ff6fae; */
+  color: hsl(210, 80%, 70%);
+  opacity: .8;
+  animation: fall linear forwards;
+}
+
+@keyframes fall {
+  to {
+    transform: translateY(110vh) rotate(360deg);
+    opacity: 0;
+  }
+}
+
+/* ================= CENA ================= */
+.scene {
+  position: relative;
+  z-index: 2;
+  width: 900px;
+  max-width: 95vw;
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+  grid-template-rows: auto auto;
+  align-items: end;
+  gap: 20px;
+}
+
+/* ================= FLOR ================= */
+.flower-wrapper {
+  display: flex;
+  justify-content: center;
+}
+
+.flower {
+  position: relative;
+  width: 200px;
+  height: 200px;
+}
+
+.petal {
+  --scale: 0;
+  position: absolute;
+  width: 70px;
+  height: 90px;
+  /* background: radial-gradient(circle at top, #ffd1e3, #ff7fb0); */
+  /* background: linear-gradient(145deg, #9fd3ff, #6fb7ff); */
+  background: linear-gradient(145deg, #7bbcff, #4fa3ff);
+  border-radius: 50% 50% 60% 60%;
+  top: 50%;
+  left: 50%;
+  transform:
+    translate(-50%, -100%)
+    rotate(var(--angle))
+    scale(var(--scale));
+  transform-origin: bottom center;
+  animation: bloom .9s forwards;
+}
+
+.center {
+  --scale: 0;
+  position: absolute;
+  width: 46px;
+  height: 46px;
+  background: radial-gradient(circle, #fff6b3, #ffcc33);
+  border-radius: 50%;
+  top: 50%;
+  left: 50%;
+  transform: translate(-50%, -50%) scale(var(--scale));
+  animation: bloom .8s forwards;
+  animation-delay: 1.2s;
+}
+
+.stem {
+  width: 10px;
+  height: 0;
+  margin: 0 auto;
+  background: linear-gradient(to bottom, #5dbb63, #2f7d32);
+  border-radius: 10px;
+  animation: grow 1.2s forwards;
+  animation-delay: 1.4s;
+}
+
+/* ================= GATO ================= */
+.cat-wrapper {
+  display: flex;
+  justify-content: center;
+}
+
+.cat {
+  position: relative;
+  width: 160px;
+  height: 170px;
+  animation: breathe 3.5s ease-in-out infinite;
+}
+
+.cat-body {
+  position: absolute;
+  bottom: 0;
+  width: 160px;
+  height: 120px;
+  background: linear-gradient(to bottom, #f7c7a4, #e8a27c);
+  border-radius: 80px 80px 60px 60px;
+}
+
+.cat-head {
+  position: absolute;
+  top: 15px;
+  left: 30px;
+  width: 100px;
+  height: 90px;
+  background: linear-gradient(to bottom, #f7c7a4, #e8a27c);
+  border-radius: 50%;
+}
+
+.ear {
+  position: absolute;
+  top: -12px;
+  width: 26px;
+  height: 32px;
+  background: #f7c7a4;
+  border-radius: 60% 60% 0 0;
+}
+
+.ear.left { left: 10px; transform: rotate(-10deg); }
+.ear.right { right: 10px; transform: rotate(10deg); }
+
+.eye {
+  position: absolute;
+  top: 38px;
+  width: 10px;
+  height: 10px;
+  background: #333;
+  border-radius: 50%;
+  animation: blink 4.5s infinite;
+}
+
+.eye.left { left: 30px; }
+.eye.right { right: 30px; }
+
+.nose {
+  position: absolute;
+  top: 55px;
+  left: 46px;
+  width: 8px;
+  height: 6px;
+  background: #ff8fab;
+  border-radius: 50%;
+}
+
+.tail {
+  position: absolute;
+  right: -55px;
+  bottom: 35px;
+  width: 75px;
+  height: 16px;
+  background: linear-gradient(to right, #f7c7a4, #e8a27c);
+  border-radius: 20px;
+  transform-origin: left center;
+  animation: tail 2.2s ease-in-out infinite;
+}
+
+/* ================= TEXTO ================= */
+.message {
+  grid-column: 1 / -1;
+  text-align: center;
+  font-size: 32px;
+  color: #4fa3ff;
+  min-height: 80px;
+  font-weight: 600;
+}
+/* .message {
+  font-size: 32px;
+  font-weight: 600;
+  margin-top: 20px;
+  color: #4fa3ff;
+} */
+
+
+/* ================= ANIMAÇÕES ================= */
+@keyframes bloom { to { --scale: 1; } }
+@keyframes grow { to { height: 140px; } }
+
+@keyframes breathe {
+  0%,100% { transform: scale(1); }
+  50% { transform: scale(1.03); }
+}
+
+@keyframes tail {
+  0%,100% { transform: rotate(12deg); }
+  50% { transform: rotate(-22deg); }
+}
+
+@keyframes blink {
+  0%,96%,100% { transform: scaleY(1); }
+  98% { transform: scaleY(.1); }
+}
+
+/* ================= RESPONSIVO IPHONE ================= */
+@media (max-width: 480px) {
+
+  .scene {
+    grid-template-columns: 1fr;
+    grid-template-rows: auto auto auto;
+    align-items: center;
+    gap: 30px;
+    padding: 20px 10px 40px;
+  }
+
+  .flower {
+    width: 160px;
+    height: 160px;
+  }
+
+  .petal {
+    width: 58px;
+    height: 75px;
+  }
+
+  .center {
+    width: 38px;
+    height: 38px;
+  }
+
+  .cat {
+    width: 140px;
+    height: 150px;
+  }
+
+  .cat-body {
+    width: 140px;
+    height: 105px;
+  }
+
+  .cat-head {
+    width: 90px;
+    height: 80px;
+    left: 25px;
+  }
+
+  .tail {
+    width: 65px;
+    right: -48px;
+  }
+
+  .message {
+    font-size: 24px;
+    padding: 0 10px;
+  }
+
+  .heart {
+    font-size: 14px !important;
+    opacity: 0.6;
+  }
+}
+</style>
+</head>
+
+<body>
+
+<div class="hearts" id="hearts"></div>
+
+<div class="scene">
+
+  <!-- FLOR -->
+  <div class="flower-wrapper">
+    <div>
+      <div class="flower">
+        <div class="petal" style="--angle:0deg;animation-delay:.2s"></div>
+        <div class="petal" style="--angle:60deg;animation-delay:.35s"></div>
+        <div class="petal" style="--angle:120deg;animation-delay:.5s"></div>
+        <div class="petal" style="--angle:180deg;animation-delay:.65s"></div>
+        <div class="petal" style="--angle:240deg;animation-delay:.8s"></div>
+        <div class="petal" style="--angle:300deg;animation-delay:.95s"></div>
+        <div class="center"></div>
+      </div>
+      <div class="stem"></div>
+    </div>
+  </div>
+
+  <!-- GATO -->
+  <div class="cat-wrapper">
+    <div class="cat">
+      <div class="cat-body"></div>
+      <div class="tail"></div>
+      <div class="cat-head">
+        <div class="ear left"></div>
+        <div class="ear right"></div>
+        <div class="eye left"></div>
+        <div class="eye right"></div>
+        <div class="nose"></div>
+      </div>
+    </div>
+  </div>
+
+  <!-- TEXTO -->
+  <div class="message" id="text"></div>
+
+</div>
+
+<script>
+/* TEXTO */
+const text = "Bom dia, princesa! 🌸🩵\nI love you <3";
+let i = 0;
+const el = document.getElementById("text");
+
+function typeWriter() {
+  if (i < text.length) {
+    el.innerHTML += text[i] === "\n" ? "<br>" : text[i];
+    i++;
+    setTimeout(typeWriter, 80);
+  }
+}
+setTimeout(typeWriter, 2200);
+
+/* CORAÇÕES */
+const hearts = document.getElementById("hearts");
+
+setInterval(() => {
+  const heart = document.createElement("div");
+  heart.className = "heart";
+  heart.innerText = "❤";
+  heart.style.left = Math.random() * 100 + "vw";
+  heart.style.fontSize = 14 + Math.random() * 16 + "px";
+  heart.style.animationDuration = 4 + Math.random() * 3 + "s";
+  hearts.appendChild(heart);
+  setTimeout(() => heart.remove(), 7000);
+}, 350);
+</script>
+
+</body>
+</html>
